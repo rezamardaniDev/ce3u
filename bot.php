@@ -3,7 +3,7 @@
 error_reporting(E_ALL | E_WARNING);
 ini_set('display_errors', 1);
 
-const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+const BOT_TOKEN = '8005267155:AAEpcqcytw8NG8h85D8vm0TGmxISbNbhoMo';
 
 function TelegramRequest(string $method, array $data)
 {
@@ -43,4 +43,14 @@ if (isset($update->callback_query)) {
     $query_id    = $update->callback_query->id ?? null;
     $type        = $update->callback_query->message->chat->type ?? null;
     $message_id  = $update->callback_query->message->message_id ?? null;
+}
+
+
+if ($text == '/start') {
+    TelegramRequest('sendMessage', [
+        'chat_id' => $from_id,
+        'text'    => 'Wellcom to ce3u Bot'
+    ]);
+
+    die;
 }
