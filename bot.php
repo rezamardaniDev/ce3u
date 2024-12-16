@@ -3,18 +3,22 @@
 error_reporting(E_ALL | E_WARNING);
 ini_set('display_errors', 1);
 
-const BOT_TOKEN = '';
+const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
 
 function TelegramRequest(string $method, array $data)
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, 'https://api.telegram.org/bot' . BOT_TOKEN . '/' . $method);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch,  CURLOPT_FRESH_CONNECT, true,);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
     $response = curl_exec($ch);
+
+    if ($response == false) {
+        return 'CurlError: ' . curl_error($ch);
+    }
+
     return json_decode($response);
 }
 
@@ -22,10 +26,10 @@ $update = json_decode(file_get_contents('php://input'));
 
 if (isset($update->message)) {
     $message     = $update->message ?? null;
-    $text        = $message->text ?? null;
-    $from_id     = $message->from->id ?? null;
+    $text        = htmlspecialchars($message->text ?? '', ENT_QUOTES, 'UTF-8');
     $first_name  = htmlspecialchars($message->from->first_name ?? null, ENT_QUOTES, 'UTF-8');
     $user_name   = $message->from->username ?? null;
+    $from_id     = $message->from->id ?? null;
     $chat_id     = $message->chat->id ?? null;
     $type        = $message->chat->type ?? null;
     $file_id     = $update->message->photo[2]->file_id ?? null;
