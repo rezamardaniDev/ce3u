@@ -3,7 +3,7 @@
 error_reporting(E_ALL | E_WARNING);
 ini_set('display_errors', 1);
 
-const BOT_TOKEN = '8005267155:AAEpcqcytw8NG8h85D8vm0TGmxISbNbhoMo';
+require_once 'config/config.php';
 
 function TelegramRequest(string $method, array $data)
 {
